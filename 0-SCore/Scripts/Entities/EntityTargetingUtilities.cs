@@ -171,13 +171,9 @@ public static class EntityTargetingUtilities
         if (IsDamageImmuneVehicle(self, target))
             return false;
 
-        // Don't make enemies out of your leader or fellow followers.
+        // Don't make enemies out of your followers, your leader, or fellow followers.
         var myLeader = EntityUtilities.GetLeaderOrOwner(self.entityId);
-        if (IsAllyOfLeader(myLeader, target))
-            return false;
-
-        // If you're a leader, don't make enemies out of your followers.
-        if (IsAllyOfLeader(self, target))
+        if (IsAllyOfLeader(myLeader ?? self, target))
             return false;
 
         // If two players are involved (directly or as leaders), determine whether they or their
