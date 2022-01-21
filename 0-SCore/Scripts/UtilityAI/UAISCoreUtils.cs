@@ -258,8 +258,6 @@ namespace UAI
 
         public static bool IsEnemyNearby(Context _context, float distance = 20f)
         {
-            var revengeTarget = EntityUtilities.GetAttackOrRevengeTarget(_context.Self.entityId);
-
             var nearbyEntities = new List<Entity>();
 
             // Search in the bounds are to try to find the most appealing entity to follow.
@@ -273,19 +271,16 @@ namespace UAI
                 if (x == _context.Self) continue;
                 if (x.IsDead()) continue;
 
-                // If they are friendly
-                //if (EntityUtilities.CheckFaction(_context.Self.entityId, x)) continue;
-                if (revengeTarget && x.entityId == revengeTarget.entityId)
-                {
-                    if (EntityTargetingUtilities.IsEnemy(_context.Self, revengeTarget))
-                        return true;
-                }
+                // If our revenge target is nearby, we should "know" it, even if we can't see them
+                if (EntityTargetingUtilities.IsCurrentRevengeTarget(_context.Self, x))
+                    return true;
+
                 // Can we see them?
                 if (!SCoreUtils.CanSee(_context.Self, x))
                     continue;
 
-
-                if (!EntityTargetingUtilities.IsEnemy(_context.Self, x)) continue;
+                if (!EntityTargetingUtilities.IsEnemy(_context.Self, x))
+                    continue;
 
                 // Otherwise they are an enemy.
                 return true;
