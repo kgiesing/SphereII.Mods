@@ -292,8 +292,7 @@ namespace UAI
                 if (!EntityTargetingUtilities.IsEnemy(_context.Self, x)) continue;
 
                 // Can we see them?
-                if (!SCoreUtils.CanSee(_context.Self, x))
-                    continue;
+                if (!SCoreUtils.CanSee(_context.Self, x, distance)) continue;
 
                 // Otherwise they are an enemy.
                 return true;
