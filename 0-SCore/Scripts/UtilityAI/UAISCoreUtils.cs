@@ -1065,7 +1065,7 @@ namespace UAI
         /// These hit mask values are taken verbatim from Voxel.raycastNew.
         /// The names represent whether a raycast should <em>collide with</em> the block.
         /// </summary>
-        private enum HitMasks : int
+        public enum HitMasks : int
         {
             Transparent = 1,
             Liquid = 2,

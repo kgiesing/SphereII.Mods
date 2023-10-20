@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -398,6 +398,7 @@
     <Compile Include="Scripts\TileEntities\TileEntityPoweredPortal.cs" />
     <Compile Include="Scripts\TileEntities\TileEntityPoweredWorkstationSdx.cs" />
     <Compile Include="Scripts\UnitTests\CanDamageChecks.cs" />
+    <Compile Include="Scripts\Vector\VectorExtensions.cs" />
     <Compile Include="Scripts\UtilityAI\Filters\IUAITargetFilter.cs" />
     <Compile Include="Scripts\UtilityAI\Filters\UAIFilterIsAlly.cs" />
     <Compile Include="Scripts\UtilityAI\Filters\UAIFilterIsEnemy.cs" />
@@ -449,6 +450,7 @@
     <Compile Include="Scripts\UtilityAI\UAITaskBreakBlocks.cs" />
     <Compile Include="Scripts\UtilityAI\UAITaskFarming.cs" />
     <Compile Include="Scripts\UtilityAI\UAITaskFireBuff.cs" />
+    <Compile Include="Scripts\UtilityAI\UAITaskMoveToCover.cs" />
     <Compile Include="Scripts\UtilityAI\UAITaskMoveToSDX.cs" />
     <Compile Include="Scripts\UtilityAI\UAITaskPatrol.cs" />
     <Compile Include="Scripts\UtilityAI\UAITaskHealSDX.cs" />
@@ -465,6 +467,7 @@
     <Compile Include="Scripts\UtilityAI\UAITaskMoveToAttackTargetSDX.cs" />
     <Compile Include="Scripts\UtilityAI\UAITaskMoveToTargetSDX.cs" />
     <Compile Include="Scripts\UtilityAI\UAITaskFollowSDX.cs" />
+    <Compile Include="Scripts\UtilityAI\UAITaskTakeCover.cs" />
     <Compile Include="Scripts\UtilityAI\UAITaskWanderSDX.cs" />
     <Compile Include="Scripts\WorldGen\HeightMapTunneler.cs" />
     <Compile Include="Scripts\WorldGen\LegacyCaveTunneler.cs" />
