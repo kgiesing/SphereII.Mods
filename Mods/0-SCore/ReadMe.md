@@ -32,6 +32,11 @@ This release of 0-SCore introduces significant enhancements across several core 
 
 
 [ Change Log ]
+Version: 2.5.10.2106
+
+	[ Event On Sleeper Volume Cleared Update ]
+		- Fixed a possible null reference when a zombie from a sleeper volume left the POI.
+
 Version: 2.5.2.1743 ( Experimental )
 
 	[ Update ]
