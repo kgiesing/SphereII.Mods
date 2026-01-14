@@ -32,6 +32,14 @@ This release of 0-SCore introduces significant enhancements across several core 
 
 
 [ Change Log ]
+Version: 2.5.35.841
+	[ Challenges ]
+		- Added missing requirement check on BlockDestroyedByFire
+
+	[ Fire Manager ]
+		- Re-fixed(1)(2) fire extinguish being recursive.
+		- Also may have fixed the challenge for extinguish.
+
 Version: 2.5.30.1209
 	[ Challenges ]
 		- Removed debug lines
