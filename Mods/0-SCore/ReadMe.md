@@ -32,6 +32,10 @@ This release of 0-SCore introduces significant enhancements across several core 
 
 
 [ Change Log ]
+Version: 2.5.39.1103
+	[ Quality]
+		- Backed out a bad patch causing cvars and buffs not to apply correctly. 
+
 Version: 2.5.36.1511
 	[ Quality ]
 		- Fixed an issue where Quality levels above 255 were being reset to lower values when crafting in closed workstation.
