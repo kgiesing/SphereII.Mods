@@ -129,26 +129,19 @@ public static class QuestUtils
         BiomeFilterTypes biomeFilterType = BiomeFilterTypes.AnyBiome,
         string biomeFilter = "")
     {
-        var world = GameManager.Instance.World;
-
-        var minDistanceTier = minSearchDistance < 0 ? 0 : GetTraderPrefabListTier(minSearchDistance);
-        var maxDistanceTier = maxSearchDistance < 0 ? 2 : GetTraderPrefabListTier(maxSearchDistance);
-
-        for (var distanceTier = minDistanceTier; distanceTier <= maxDistanceTier; distanceTier++)
+        var current = QuestEventManager.Current;
+        var gameRandom = GameManager.Instance.World.GetGameRandom();
+        var index = trader.PreferredDistanceIndex;
+        for (var i = 0; i < 3; i++)
         {
-           var prefabsForTrader = QuestEventManager.Current.GetPrefabsForTrader(
-                trader.traderArea,
-                difficulty,
-                distanceTier,
-                world.GetGameRandom());
-
-           if (prefabsForTrader == null) continue;
-           // GetPrefabsForTrader shuffles the prefabs before returning them, so we can just
-            // iterate through the list and still send players to "random" POIs
-            for (var j = 0; j < prefabsForTrader.Count; j++)
+            index %= 3;
+            var prefabsForTrader = current.GetPrefabsForTrader(trader.traderArea, difficulty, index, gameRandom);
+            if (prefabsForTrader != null)
             {
-                var prefabInstance = prefabsForTrader[j];
-                if (ValidPrefabForQuest(
+                for (var j = 0; j < prefabsForTrader.Count; j++)
+                {
+                    PrefabInstance prefabInstance = prefabsForTrader[j];
+                    if (ValidPrefabForQuest(
                         trader,
                         prefabInstance,
                         questTag,
@@ -157,13 +150,14 @@ public static class QuestUtils
                         usedPoiLocations,
                         entityIdForQuests,
                         biomeFilterType,
-                        biomeFilter,
-                        minSearchDistance,
-                        maxSearchDistance))
-                {
-                    return prefabInstance;
+                        biomeFilter))
+                    {
+                        return prefabInstance;
+                    }
                 }
             }
+
+            index++;
         }
 
         return null;
@@ -290,14 +284,14 @@ public static class QuestUtils
             return false;
         }
 
-        //if (!prefab.prefab.GetQuestTag(questTag))
-        //{
-        //    if (LoggingEnabled)
-        //    {
-        //        Log.Out($"Quest {questTag}: Prefab {prefab.name} does not have quest tag {questTag}");
-        //    }
-        //    return false;
-        //}
+        if (!questTag.IsEmpty && !prefab.prefab.GetQuestTag(questTag))
+        {
+            if (LoggingEnabled)
+            {
+                Log.Out($"Quest {questTag}: Prefab {prefab.name} does not have quest tag {questTag}");
+            }
+            return false;
+        }
 
         Vector2 poiLocation = new Vector2(prefab.boundingBoxPosition.x, prefab.boundingBoxPosition.z);
 
@@ -310,7 +304,7 @@ public static class QuestUtils
             return false;
         }
 
-        QuestEventManager.POILockoutReasonTypes lockoutReason = QuestEventManager.Current.CheckForPOILockouts(entityIdForQuests, poiLocation, out var num);
+        QuestEventManager.POILockoutReasonTypes lockoutReason = QuestEventManager.Current.CheckForPOILockouts(entityIdForQuests, poiLocation, out _);
 
         if (lockoutReason != QuestEventManager.POILockoutReasonTypes.None)
         {
