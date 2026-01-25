@@ -131,11 +131,19 @@ public static class QuestUtils
     {
         var current = QuestEventManager.Current;
         var gameRandom = GameManager.Instance.World.GetGameRandom();
-        var index = trader.PreferredDistanceIndex;
+        var distanceIndex = trader.PreferredDistanceIndex;
+        var distanceIndexes = GetDistanceIndexes(minSearchDistance, maxSearchDistance);
         for (var i = 0; i < 3; i++)
         {
-            index %= 3;
-            var prefabsForTrader = current.GetPrefabsForTrader(trader.traderArea, difficulty, index, gameRandom);
+            distanceIndex %= 3;
+
+            if (!distanceIndexes.Contains(distanceIndex))
+            {
+                distanceIndex++;
+                continue;
+            }
+
+            var prefabsForTrader = current.GetPrefabsForTrader(trader.traderArea, difficulty, distanceIndex, gameRandom);
             if (prefabsForTrader != null)
             {
                 for (var j = 0; j < prefabsForTrader.Count; j++)
@@ -150,17 +158,86 @@ public static class QuestUtils
                         usedPoiLocations,
                         entityIdForQuests,
                         biomeFilterType,
-                        biomeFilter))
+                        biomeFilter,
+                        minSearchDistance,
+                        maxSearchDistance))
                     {
                         return prefabInstance;
                     }
                 }
             }
 
-            index++;
+            distanceIndex++;
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// <para>
+    /// Takes the minumum and maximum search distances, and returns the vanilla distance indexes
+    /// that are compatible with those search distances. It is meant to avoid searching through
+    /// lists of POIs by distance index, if none of those POIs can be within range.
+    /// </para>
+    /// <para>
+    /// <list type="table">
+    ///     <listheader>
+    ///         <term>index</term>
+    ///         <description>distance range</description>
+    ///     </listheader>
+    ///     <item>
+    ///         <term>0</term>
+    ///         <description>0 - 500</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>1</term>
+    ///         <description>501 - 1500</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>2</term>
+    ///         <description>1501+</description>
+    ///     </item>
+    /// </list>
+    /// Taken from <see cref="QuestEventManager.SetupTraderPrefabList"/>
+    /// </para>
+    /// </summary>
+    /// <param name="minSearchDistance">Minimum search distance, in blocks/meters</param>
+    /// <param name="maxSearchDistance">Maximum search distance, in blocks/meters</param>
+    /// <returns></returns>
+    public static List<int> GetDistanceIndexes(float minSearchDistance, float maxSearchDistance)
+    {
+        var allIndexes = new List<int> { 0, 1, 2 };
+
+        if (minSearchDistance > maxSearchDistance)
+        {
+            // Invalid entries. Just use the vanilla indexes.
+            return allIndexes;
+        }
+
+        if (minSearchDistance < 0  && maxSearchDistance < 0)
+        {
+            // No min or max specified. Use the vanilla indexes.
+            return allIndexes;
+        }
+
+        if (minSearchDistance <= 500f && maxSearchDistance > 1500f)
+        {
+            // This is within the entire range of vanilla indexes.
+            return allIndexes;
+        }
+
+        // Remove the indexes according to the min and max distance.
+        if (minSearchDistance > 500f)
+            allIndexes.Remove(0);
+        if (minSearchDistance > 1500f)
+            allIndexes.Remove(1);
+
+        if (maxSearchDistance >= 0 && maxSearchDistance <= 1500f)
+            allIndexes.Remove(2);
+        if (maxSearchDistance >= 0 && maxSearchDistance <= 500f)
+            allIndexes.Remove(1);
+
+        return allIndexes;
     }
 
     /// <summary>
