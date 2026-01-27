@@ -32,7 +32,7 @@ This release of 0-SCore introduces significant enhancements across several core 
 
 
 [ Change Log ]
-Version: 2.5.48.912
+Version:  2.5.48.914
 
 	[ NPCs ]
 		- Added a patch by Gussak to fix NPCs getting stuck on corpses.
@@ -72,7 +72,7 @@ Version: 2.5.48.912
 		Minor fixes to ObjectiveRandomTaggedPOIGotoSDX (documentation, renamed inaccurately-named variable)
 		```
 
-Version: 2.5.48.914
+Version: 2.5.39.1103
 	[ Quality]
 		- Backed out a bad patch causing cvars and buffs not to apply correctly. 
 
