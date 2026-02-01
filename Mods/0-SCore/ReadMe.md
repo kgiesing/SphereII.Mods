@@ -32,6 +32,16 @@ This release of 0-SCore introduces significant enhancements across several core 
 
 
 [ Change Log ]
+Version: 2.5.53.911
+	[ NPCs ]
+		- Fixed an issue where an NPC would get run over while you were driving, and you'd pay the price.
+
+	[ Drop Box ]
+		- Refactored distribution code slightly to add guards against lost item stacks during distribution.
+
+	[ Challenges ]
+		- Added a check in Sleeper Cleared to make sure that another player is within the same POI as the clearer.
+
 Version:  2.5.48.914
 
 	[ NPCs ]
